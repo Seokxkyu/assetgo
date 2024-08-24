@@ -45,20 +45,14 @@ class CompletionExecutor:
         else:
             return 'Error: ' + res['status']['message']
 
-def summarize_articles(parquet_file_path, output_parquet_path):
-    df = pd.read_parquet(parquet_file_path)
-
+def summarize_articles(ds_nodash, output_dir):
+    input_parquet = f"{output_dir}/{ds_nodash}.parquet"
+    output_parquet = f"{output_dir}/{ds_nodash}_summarized.parquet"
+    
+    df = pd.read_parquet(input_parquet)
     completion_executor = CompletionExecutor()
 
     df['summarize'] = df['content'].apply(lambda x: completion_executor.execute(x))
-
-    df.to_parquet(output_parquet_path, index=False)
+    df.to_parquet(output_parquet, index=False)
 
     return df
-
-if __name__ == "__main__":
-    input_parquet = "/content/drive/MyDrive/20240824.parquet"
-    output_parquet = "/content/drive/MyDrive/20240824_summarized.parquet"
-
-    summarized_df = summarize_articles(input_parquet, output_parquet)
-    print("Summarization complete. Data saved to:", output_parquet)
