@@ -55,7 +55,7 @@ def crawl_data(date, output_dir):
 
     df = pd.DataFrame(data, columns=['URL', 'title', 'content'])
     
-    file_name = f"{output_dir}/{date}.parquet"
+    file_name = f"{output_dir}/content/{date}.parquet"
     df.to_parquet(file_name, index=False, engine='pyarrow')
     # file_name = f"{output_dir}/{date}.csv"
     # df.to_csv(file_name, index=False, encoding='utf-8-sig')
