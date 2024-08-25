@@ -30,7 +30,7 @@ def scrape_content(url):
     return title, content
 
 # Get article URLs
-def fetch_urls(date, max_pages=10):
+def fetch_urls(date, max_pages=3):
     base_url = f"https://finance.naver.com/news/mainnews.naver?date={date}"
     urls = []
     for page in range(1, max_pages + 1):
