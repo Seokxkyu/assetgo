@@ -18,10 +18,8 @@ class KeywordExtractor:
         )
         return {kw[0]: kw[1] for kw in keywords}
 
-    def extract_keywords_from_parquet(self, input_parquet, output_parquet):
+    def extract(self, input_parquet, output_parquet):
         df = pd.read_parquet(input_parquet)
-        
         df['keywords'] = df['content'].apply(lambda x: self.extract_keywords(x))
-        
         df.to_parquet(output_parquet, index=False)
         return df
