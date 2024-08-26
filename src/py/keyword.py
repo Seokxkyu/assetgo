@@ -23,3 +23,9 @@ class KeywordExtractor:
         df['keywords'] = df['content'].apply(lambda x: self.extract_keywords(x))
         df.to_parquet(output_parquet, index=False)
         return df
+
+def extract_keywords(ds_nodash, output_dir, **kwargs):
+    input_parquet = f"{output_dir}/summarize/{ds_nodash}.parquet"
+    output_parquet = f"{output_dir}/keywords/{ds_nodash}.parquet"
+    extractor = KeywordExtractor()
+    extractor.extract(input_parquet, output_parquet)
