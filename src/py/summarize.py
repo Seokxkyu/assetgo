@@ -24,7 +24,7 @@ class CompletionExecutor:
         }
 
         conn = http.client.HTTPSConnection(self._host)
-        conn.request('POST', '/testapp/v1/api-tools/summarization/v2/fea095400a684ef3a9b6e4f03959c1b0', json.dumps(completion_request), headers)
+        conn.request('POST', '/testapp/v1/api-tools/keyword-extraction/v1', json.dumps(completion_request), headers)
         response = conn.getresponse()
         result = json.loads(response.read().decode(encoding='utf-8'))
         conn.close()
@@ -41,18 +41,18 @@ class CompletionExecutor:
         }
         res = self._send_request(request_data)
         if res['status']['code'] == '20000':
-            return res['result']['text']
+            return res['result']['keywords']
         else:
             return 'Error: ' + res['status']['message']
 
-def summarize_articles(ds_nodash, output_dir):
+def extract_keywords(ds_nodash, output_dir):
     input_parquet = f"{output_dir}/content/{ds_nodash}.parquet"
-    output_parquet = f"{output_dir}/summarize/{ds_nodash}.parquet"
+    output_parquet = f"{output_dir}/keywords/{ds_nodash}.parquet"
     
     df = pd.read_parquet(input_parquet)
     completion_executor = CompletionExecutor()
 
-    df['summarize'] = df['content'].apply(lambda x: completion_executor.execute(x))
+    df['keywords'] = df['content'].apply(lambda x: completion_executor.execute(x))
     df.to_parquet(output_parquet, index=False)
 
     return df
