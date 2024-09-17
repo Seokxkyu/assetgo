@@ -8,7 +8,7 @@ class CompletionExecutor:
         self._host = 'clovastudio.apigw.ntruss.com'
         self._api_key = os.getenv('CLOVA_API_KEY')
         self._api_key_primary_val = os.getenv('CLOVA_API_PRIMARY_KEY')
-        self._request_id = os.getenv('CLOVA_REQUEST_ID')
+        self._request_id = '9adb0137-8663-4035-b40c-9c16866f0c9e'
         self._seg_min_size = 500  # 최소 요약 단위 크기
         self._seg_max_size = 2000  # 최대 요약 단위 크기
         self._seg_count = -1  # 모델이 최적 문단 수로 분리하도록 설정
