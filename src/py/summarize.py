@@ -2,6 +2,7 @@ import os
 import pandas as pd
 import http.client
 import json
+import time
 
 class CompletionExecutor:
     def __init__(self):
@@ -39,6 +40,8 @@ class CompletionExecutor:
             "autoSentenceSplitter": self._auto_sentence_splitter,
             "includeAiFilters": self._include_ai_filters
         }
+
+        time.sleep(1)
         res = self._send_request(request_data)
         if res['status']['code'] == '20000':
             return res['result']['text']
