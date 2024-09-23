@@ -52,11 +52,11 @@ class TFIDFExtractor:
             top_keywords = row.sort_values(ascending=False).head(top_n).index
             keywords[f'Article {idx+1}'] = ', '.join(top_keywords.tolist())
 
-        df['keywords'] = [keywords[f'Article {i+1}'] for i in range(len(articles))]
+        df['keywords_tfidf'] = [keywords[f'Article {i+1}'] for i in range(len(articles))]
         return df
 
 def extract_keywords(ds_nodash, output_dir):
-    input_parquet = f"{output_dir}/content/{ds_nodash}.parquet"
+    input_parquet = f"{output_dir}/bert/{ds_nodash}.parquet"
     output_parquet = f"{output_dir}/keywords/{ds_nodash}.parquet"
 
     df = pd.read_parquet(input_parquet)

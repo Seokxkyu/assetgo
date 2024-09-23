@@ -53,7 +53,7 @@ class KeyBERTExtractor:
         return df
 
 def extract_keybert(ds_nodash, output_dir):
-    input_parquet = f"{output_dir}/keywords/{ds_nodash}.parquet"
+    input_parquet = f"{output_dir}/content/{ds_nodash}.parquet"
     output_parquet = f"{output_dir}/bert/{ds_nodash}.parquet"
 
     df = pd.read_parquet(input_parquet)
