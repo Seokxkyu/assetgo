@@ -52,7 +52,7 @@ class KeyBERTExtractor:
         df['keywords'] = [keywords[f'Article {i+1}'] for i in range(len(articles))]
         return df
 
-def extract_keywords(ds_nodash, output_dir):
+def extract_keybert(ds_nodash, output_dir):
     input_parquet = f"{output_dir}/keywords/{ds_nodash}.parquet"
     output_parquet = f"{output_dir}/bert/{ds_nodash}.parquet"
 
