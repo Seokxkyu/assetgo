@@ -1,7 +1,7 @@
 import pandas as pd
 import re
 from konlpy.tag import Okt
-from sklearn.feature_extraction.text import TfidfVectorizer
+from keybert import KeyBERT
 
 class Preprocessor:
     def __init__(self):
@@ -33,10 +33,10 @@ class Preprocessor:
         text = self.nouns(text)
         return text
 
-class TFIDFExtractor:
+class KeyBERTExtractor:
     def __init__(self):
         self.preprocessor = Preprocessor()
-        self.vectorizer = TfidfVectorizer()
+        self.model = KeyBERT()
 
     def extract(self, df, content_column='content', top_n=20):
         articles = df[content_column].tolist()
@@ -44,24 +44,21 @@ class TFIDFExtractor:
         
         processed_articles = [self.preprocessor.process(article) for article in articles]
 
-        tfidf_matrix = self.vectorizer.fit_transform(processed_articles)
-        tfidf_df = pd.DataFrame(tfidf_matrix.toarray(), columns=self.vectorizer.get_feature_names_out())
-
         keywords = {}
-        for idx, row in tfidf_df.iterrows():
-            top_keywords = row.sort_values(ascending=False).head(top_n).index
-            keywords[f'Article {idx+1}'] = ', '.join(top_keywords.tolist())
+        for idx, article in enumerate(processed_articles):
+            top_keywords = self.model.extract_keywords(article, keyphrase_ngram_range=(1, 1), stop_words='english', top_n=top_n)
+            keywords[f'Article {idx+1}'] = ', '.join([kw[0] for kw in top_keywords])
 
         df['keywords'] = [keywords[f'Article {i+1}'] for i in range(len(articles))]
         return df
 
 def extract_keywords(ds_nodash, output_dir):
-    input_parquet = f"{output_dir}/content/{ds_nodash}.parquet"
-    output_parquet = f"{output_dir}/keywords/{ds_nodash}.parquet"
+    input_parquet = f"{output_dir}/keywords/{ds_nodash}.parquet"
+    output_parquet = f"{output_dir}/bert/{ds_nodash}.parquet"
 
     df = pd.read_parquet(input_parquet)
 
-    extractor = TFIDFExtractor()
+    extractor = KeyBERTExtractor()
 
     df = extractor.extract(df, content_column='content')
     df.to_parquet(output_parquet, index=False)

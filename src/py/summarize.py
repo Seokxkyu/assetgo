@@ -49,7 +49,7 @@ class CompletionExecutor:
             return 'Error: ' + res['status']['message']
 
 def summarize_articles(ds_nodash, output_dir):
-    input_parquet = f"{output_dir}/content/{ds_nodash}.parquet"
+    input_parquet = f"{output_dir}/keywords/{ds_nodash}.parquet"
     output_parquet = f"{output_dir}/summarize/{ds_nodash}.parquet"
     
     df = pd.read_parquet(input_parquet)
