@@ -56,6 +56,7 @@ def summarize_articles(ds_nodash, output_dir):
     completion_executor = CompletionExecutor()
 
     df['summarize'] = df['content'].apply(lambda x: completion_executor.execute(x))
+    time.sleep(10)
     df.to_parquet(output_parquet, index=False)
 
     return df
