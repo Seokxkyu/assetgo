@@ -41,7 +41,7 @@ class CompletionExecutor:
             "includeAiFilters": self._include_ai_filters
         }
 
-        time.sleep(1)
+        time.sleep(2)
         res = self._send_request(request_data)
         if res['status']['code'] == '20000':
             return res['result']['text']
