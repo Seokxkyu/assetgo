@@ -64,5 +64,6 @@ def extract_keywords(ds_nodash, output_dir):
     extractor = TFIDFExtractor()
 
     df = extractor.extract(df, content_column='content')
+    df['date'] = ds_nodash
     df.to_parquet(output_parquet, index=False)
     return df
